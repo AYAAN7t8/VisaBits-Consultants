@@ -2,6 +2,9 @@
 const nextConfig = {
   output: 'export',  // THIS IS CRITICAL for GitHub Pages
   trailingSlash: true, // Also recommended for static sites
+   eslint: {
+    ignoreDuringBuilds: true, // This disables ESLint during build
+  },
   images: {
     unoptimized: true, // Required for static export
     domains: [

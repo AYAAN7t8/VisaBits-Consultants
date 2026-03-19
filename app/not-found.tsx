@@ -1,45 +1,54 @@
+import Link from 'next/link';
+
 export default function NotFound() {
   return (
     <div style={{ 
       minHeight: '100vh',
       display: 'flex',
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      flexDirection: 'column',
       padding: '2rem',
       textAlign: 'center',
-      backgroundColor: '#f8fafc'
+      background: '#f8fafc'
     }}>
       <h1 style={{ 
-        fontSize: '3rem',
+        fontSize: '4rem', 
         color: '#0a4b7a',
-        marginBottom: '1rem',
-        fontWeight: 'bold'
+        marginBottom: '1rem'
       }}>
-        404 - Page Not Found
+        404
       </h1>
-      <p style={{ 
-        fontSize: '1.2rem',
-        color: '#4a5568',
-        marginBottom: '2rem'
+      <h2 style={{ 
+        fontSize: '2rem',
+        color: '#1e2b37',
+        marginBottom: '1rem'
       }}>
-        Sorry, we couldn't find the page you're looking for.
+        Page Not Found
+      </h2>
+      <p style={{ 
+        color: '#4a5b6b',
+        marginBottom: '2rem',
+        maxWidth: '500px'
+      }}>
+        The page you're looking for doesn't exist or has been moved.
       </p>
-      <a 
+      <Link 
         href="/"
         style={{
-          backgroundColor: '#0a4b7a',
+          background: '#0a4b7a',
           color: 'white',
-          padding: '0.75rem 1.5rem',
-          borderRadius: '0.5rem',
+          padding: '1rem 2rem',
           textDecoration: 'none',
-          fontSize: '1rem',
+          borderRadius: '8px',
+          fontWeight: '500',
           border: 'none',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          display: 'inline-block'
         }}
       >
-        Return Home
-      </a>
+        Go Back Home
+      </Link>
     </div>
   );
 }
