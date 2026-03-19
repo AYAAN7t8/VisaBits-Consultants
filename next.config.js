@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  allowedDevOrigins: ["*.preview.same-app.com"],
+  output: 'export',  // THIS IS CRITICAL for GitHub Pages
+  trailingSlash: true, // Also recommended for static sites
   images: {
-    unoptimized: true,
+    unoptimized: true, // Required for static export
     domains: [
       "source.unsplash.com",
       "images.unsplash.com",
