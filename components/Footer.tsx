@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <Image
-              src="/visabits-logo.png"
+              src="/images/logo1.png"
               alt="VisaBits Consultants"
               width={160}
               height={45}
@@ -123,10 +123,10 @@ export default function Footer() {
               © 2026 VisaBits Consultants. All Rights Reserved.
             </p>
             <div className="flex gap-6">
-              <Link href="/privacy" className="text-sm text-secondary-foreground/60 hover:text-white transition-colors">
+              <Link href="/privacy-policy" className="text-sm text-secondary-foreground/60 hover:text-white transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-sm text-secondary-foreground/60 hover:text-white transition-colors">
+              <Link href="/terms-and-conditions" className="text-sm text-secondary-foreground/60 hover:text-white transition-colors">
                 Terms & Conditions
               </Link>
             </div>

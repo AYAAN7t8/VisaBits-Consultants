@@ -22,13 +22,21 @@ export default function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
       <div className="container-custom">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <div className="text-2xl font-bold">
-              <span className="text-primary">Visa</span>
-              <span className="text-secondary">Bits</span>
-            </div>
-          </Link>
+          {/* Logo - Large Image with Consultants Text */}
+          <Link href="/" className="flex items-center gap-3 group">
+  {/* Logo Image - Enlarged with pixel dimensions */}
+  <div className="relative">
+    <Image
+      src="/images/logo.png"
+      alt="VisaBits Consultants"
+      width={120}
+      height={100}
+      className="object-contain group-hover:scale-105 transition-transform duration-300"
+    />
+  </div>
+  {/* Consultants Text - Color #2F3A40 */}
+ 
+</Link>
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-6">
