@@ -1,5 +1,5 @@
 // app/lib/store.ts
 
-// In-memory storage (use Redis or a database in production)
-export const activeConversations = new Set<string>();      // Numbers receiving auto-replies
-export const agentRequests = new Set<string>();            // Numbers that have requested an agent
+export const activeConversations = new Set<string>();   // Numbers currently handled by AI
+export const agentRequests = new Set<string>();         // Numbers that have requested an agent
+export const humanHandled = new Set<string>();          // Numbers that a human has replied to (AI stops)
