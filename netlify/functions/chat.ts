@@ -28,12 +28,12 @@ export const handler: Handler = async (event) => {
         'X-Title': 'VisaBits Consultants',
       },
       body: JSON.stringify({
-        // Try a different model that is definitely available
-        model: 'meta-llama/llama-3.2-3b-instruct:free',
+        // ✅ CHANGE THIS MODEL
+        model: 'gpt-oss-20b:free',
         messages: [
           {
             role: 'system',
-            content: 'You are a helpful assistant for VisaBits Consultants. Provide clear, friendly answers about visa services.'
+            content: 'You are a helpful assistant for VisaBits Consultants. Provide clear, friendly answers about visa services. Keep responses short and conversational.'
           },
           { role: 'user', content: message }
         ],
@@ -42,7 +42,7 @@ export const handler: Handler = async (event) => {
     });
 
     const data = await response.json();
-    console.log('📦 OpenRouter response:', JSON.stringify(data, null, 2));
+    console.log('📦 OpenRouter response status:', response.status);
 
     if (!response.ok) {
       console.error('❌ OpenRouter error:', data);
