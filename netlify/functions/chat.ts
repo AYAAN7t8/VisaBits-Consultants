@@ -569,7 +569,7 @@ RULES:
       body: JSON.stringify({
         // ✅ Free model with large context window (204,800 tokens)
         // Can handle your entire knowledge base
-        model: 'opencode/big-pickle',
+        model: 'deepseek-v4-flash-free',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
