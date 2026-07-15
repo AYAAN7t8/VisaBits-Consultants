@@ -522,10 +522,12 @@ export const handler: Handler = async (event) => {
 
   try {
     const { message } = JSON.parse(event.body || '{}');
-    const apiKey = process.env.OPENROUTER_API_KEY;
+    
+    // 🔑 Use OPENCODE_API_KEY (not OPENROUTER_API_KEY)
+    const apiKey = process.env.OPENCODE_API_KEY || process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
-      console.error('❌ OPENROUTER_API_KEY is missing');
+      console.error('❌ OPENCODE_API_KEY is missing');
       return {
         statusCode: 500,
         body: JSON.stringify({ error: 'API key not configured' }),
@@ -555,24 +557,25 @@ RULES:
     console.log('📩 Chat request:', message);
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 20000);
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // 🌐 OpenCode Zen API endpoint (OpenAI-compatible)
+    const response = await fetch('https://opencode.ai/zen/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://visabitsconsultants.co.uk',
-        'X-Title': 'VisaBits Consultants',
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.2-3b-instruct:free',
+        // ✅ Free model with large context window (204,800 tokens)
+        // Can handle your entire knowledge base
+        model: 'opencode/minimax-m2.5-free',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
         ],
         max_tokens: 300,
-        temperature: 0.7,
+        temperature: 0.3,
       }),
       signal: controller.signal,
     });
@@ -582,10 +585,10 @@ RULES:
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('❌ OpenRouter error:', data);
+      console.error('❌ OpenCode Zen error:', data);
       return {
         statusCode: response.status,
-        body: JSON.stringify({ error: data.error?.message || 'AI service error' }),
+        body: JSON.stringify({ error: data.error?.message || 'API service error' }),
       };
     }
 
