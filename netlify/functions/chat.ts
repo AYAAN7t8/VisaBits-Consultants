@@ -1,55 +1,35 @@
 import { Handler } from '@netlify/functions';
+import fs from 'fs';
+import path from 'path';
 
-// Base URL for your site
-const SITE_URL = 'https://visabitsconsultants.co.uk';
-
-// Knowledge files to load
-const KNOWLEDGE_FILES = [
-  'About-VisaBits.txt',
-  'Schengen-Visa-Service.txt',
-  'Payment-Process.txt',
-  '4-Step-Visa-Process.txt',
-  'Required-Docs-Checklist.txt',
-  'Non-Schengen-Visa-Services.txt',
-  'FAQs.txt',
-  'Style-Guide.txt'
-];
-
-async function loadKnowledge(): Promise<string> {
+function loadKnowledge(): string {
+  const knowledgeDir = path.join(process.cwd(), 'public', 'knowledge');
   let fullText = '';
-  for (const file of KNOWLEDGE_FILES) {
+
+  if (!fs.existsSync(knowledgeDir)) {
+    console.warn('⚠️ Knowledge directory not found:', knowledgeDir);
+    return '';
+  }
+
+  const files = fs.readdirSync(knowledgeDir);
+
+  for (const file of files) {
+    if (!file.endsWith('.txt')) continue;
     try {
-      const url = `${SITE_URL}/knowledge/${file}`;
-      const response = await fetch(url);
-      if (response.ok) {
-        const text = await response.text();
-        fullText += `\n\n--- ${file.replace('.txt', '')} ---\n${text}`;
-        console.log(`✅ Loaded: ${file}`);
-      } else {
-        console.warn(`⚠️ Failed to load ${file}: ${response.status}`);
-      }
+      const filePath = path.join(knowledgeDir, file);
+      const text = fs.readFileSync(filePath, 'utf8');
+      fullText += `\n\n--- ${file.replace('.txt', '')} ---\n${text}`;
+      console.log(`✅ Loaded: ${file}`);
     } catch (error) {
-      console.error(`❌ Error loading ${file}:`, error);
+      console.error(`❌ Failed to read ${file}:`, error);
     }
   }
+
   console.log(`📚 Total knowledge text length: ${fullText.length} characters`);
   return fullText;
 }
 
-// Cached knowledge (to avoid fetching every time)
 let cachedKnowledge: string | null = null;
-let lastFetch = 0;
-const CACHE_TTL = 60 * 60 * 1000; // 1 hour
-
-async function getKnowledge(): Promise<string> {
-  const now = Date.now();
-  if (cachedKnowledge && (now - lastFetch) < CACHE_TTL) {
-    return cachedKnowledge;
-  }
-  cachedKnowledge = await loadKnowledge();
-  lastFetch = now;
-  return cachedKnowledge;
-}
 
 export const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -68,10 +48,12 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // ✅ Load knowledge base (cached)
-    const knowledge = await getKnowledge();
+    // Load knowledge (cache it after first load)
+    if (!cachedKnowledge) {
+      cachedKnowledge = loadKnowledge();
+    }
+    const knowledge = cachedKnowledge;
 
-    // Fallback knowledge
     const fallbackKnowledge = `
 VisaBits Consultants is a visa consultancy agency based in the UK.
 Services: Schengen visas, Germany visas, France visas, Spain visas.
