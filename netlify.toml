@@ -2,6 +2,8 @@
   remote_images = ["https://source.unsplash.com/.*", "https://images.unsplash.com/.*", "https://ext.same-assets.com/.*", "https://ugc.same-assets.com/.*"]
 
 [build]
+  
+  command = "npm run build"
   publish = "out"
 
 [[redirects]]
@@ -16,5 +18,5 @@
     X-XSS-Protection = "1; mode=block"
 
 # IMPORTANT: Remove or comment out the Next.js plugin for static sites
-# [[plugins]]
-#   package = "@netlify/plugin-nextjs"
+#  [[plugins]]
+# package = "@netlify/plugin-nextjs"

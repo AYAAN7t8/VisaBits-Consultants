@@ -26,7 +26,7 @@ export default function ChatWidget() {
 
     try {
       const history = messages.map(m => ({ role: m.role, content: m.content }));
-      const response = await fetch('/api/chat', {
+      const response = await fetch('/.netlify/functions/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMessage, history }),
