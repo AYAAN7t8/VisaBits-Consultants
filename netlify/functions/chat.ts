@@ -7,25 +7,51 @@ export const handler: Handler = async (event) => {
 
   try {
     const { message } = JSON.parse(event.body || '{}');
-    const openRouterKey = process.env.OPENROUTER_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY;
 
-    // Call OpenRouter (same as your original /api/chat)
+    if (!apiKey) {
+      console.error('❌ OPENROUTER_API_KEY is missing');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'API key not configured' }),
+      };
+    }
+
+    console.log('📩 Chat request:', message);
+
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openRouterKey}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://visabitsconsultants.co.uk',
+        'X-Title': 'VisaBits Consultants',
       },
       body: JSON.stringify({
-        model: 'laguna-xs-2.1:free',
+        // Try a different model that is definitely available
+        model: 'meta-llama/llama-3.2-3b-instruct:free',
         messages: [
-          { role: 'system', content: 'You are a helpful visa consultant for VisaBits.' },
+          {
+            role: 'system',
+            content: 'You are a helpful assistant for VisaBits Consultants. Provide clear, friendly answers about visa services.'
+          },
           { role: 'user', content: message }
         ],
+        max_tokens: 300,
       }),
     });
 
     const data = await response.json();
+    console.log('📦 OpenRouter response:', JSON.stringify(data, null, 2));
+
+    if (!response.ok) {
+      console.error('❌ OpenRouter error:', data);
+      return {
+        statusCode: response.status,
+        body: JSON.stringify({ error: data.error?.message || 'AI service error' }),
+      };
+    }
+
     const reply = data.choices?.[0]?.message?.content || "I'm sorry, I couldn't process that.";
 
     return {
@@ -33,6 +59,10 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify({ reply }),
     };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Internal server error' }) };
+    console.error('❌ Chat function error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Internal server error' }),
+    };
   }
 };
