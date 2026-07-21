@@ -2,7 +2,7 @@
 // Receives WhatsApp messages via Wapfly, calls AI, sends reply
 
 // --- CONFIGURATION (from environment variables) ---
-const WAPPFLY_API_URL = process.env.WAPPFLY_API_URL || 'https://api.wappfly.com';
+const WAPPFLY_API_URL = process.env.WAPPFLY_API_URL || 'https://wappfly.com/api';
 const WAPPFLY_API_KEY = process.env.WAPPFLY_API_KEY || '';
 const WAPPFLY_INSTANCE = process.env.WAPPFLY_INSTANCE || 'default';
 
@@ -67,8 +67,8 @@ exports.handler = async (event) => {
       console.error('❌ AI API call failed:', aiError);
     }
 
-    // ✅ Step 2: Send reply via Wappfly
-    const sendUrl = `${WAPPFLY_API_URL}/api/${WAPPFLY_INSTANCE}/sendText`;
+    // ✅ Step 2: Send reply via Wapfly
+    const sendUrl = `${WAPPFLY_API_URL}/${WAPPFLY_INSTANCE}/sendText`;
     console.log(`📤 Sending to ${from}: "${aiReply}"`);
 
     const response = await fetch(sendUrl, {
@@ -85,7 +85,7 @@ exports.handler = async (event) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`❌ Failed to send message via Wappfly: ${errorText}`);
+      console.error(`❌ Failed to send message via Wapfly: ${errorText}`);
       return {
         statusCode: 500,
         body: JSON.stringify({ error: 'Failed to send reply' }),
