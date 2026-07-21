@@ -1,4 +1,5 @@
-import { Handler } from '@netlify/functions';
+// Netlify Function: WhatsApp Webhook (Wapfly)
+// Receives WhatsApp messages via Wapfly, calls AI, sends reply
 
 // --- CONFIGURATION (from environment variables) ---
 const WAPPFLY_API_URL = process.env.WAPPFLY_API_URL || 'https://api.wappfly.com';
@@ -9,7 +10,7 @@ const WAPPFLY_INSTANCE = process.env.WAPPFLY_INSTANCE || 'default';
 const AI_API_URL = process.env.AI_API_URL || 'https://visabitsconsultants.netlify.app/.netlify/functions/chat';
 // --------------------
 
-export const handler: Handler = async (event) => {
+exports.handler = async (event) => {
   // Only accept POST requests
   if (event.httpMethod !== 'POST') {
     return {
