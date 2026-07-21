@@ -1,13 +1,12 @@
 import { Handler } from '@netlify/functions';
 
-// --- CONFIGURATION ---
-// Replace with your actual Wappfly credentials
-const WAPPFLY_API_URL = 'https://api.wappfly.com';
-const WAPPFLY_API_KEY = '6fb1f0613f16a1756385f4c403b948c792d29381885a7a0594ac932f24e86aca';
-const WAPPFLY_INSTANCE = 'default';
+// --- CONFIGURATION (from environment variables) ---
+const WAPPFLY_API_URL = process.env.WAPPFLY_API_URL || 'https://api.wappfly.com';
+const WAPPFLY_API_KEY = process.env.WAPPFLY_API_KEY || '';
+const WAPPFLY_INSTANCE = process.env.WAPPFLY_INSTANCE || 'default';
 
-// Your existing AI endpoint (Railway or Netlify)
-const AI_API_URL = 'https://visabits-consultants-production.up.railway.app/api/chat';
+// Your existing AI endpoint - use Netlify function instead of Railway
+const AI_API_URL = process.env.AI_API_URL || 'https://visabitsconsultants.netlify.app/.netlify/functions/chat';
 // --------------------
 
 export const handler: Handler = async (event) => {

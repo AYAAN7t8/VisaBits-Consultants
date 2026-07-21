@@ -523,11 +523,11 @@ export const handler: Handler = async (event) => {
   try {
     const { message } = JSON.parse(event.body || '{}');
     
-    // 🔑 Use OPENCODE_API_KEY (not OPENROUTER_API_KEY)
-    const apiKey = process.env.OPENCODE_API_KEY || process.env.OPENROUTER_API_KEY;
+    // 🔑 Use OPENCODE_ZEN_API_KEY (from .env.local)
+        const apiKey = process.env.OPENCODE_ZEN_API_KEY || process.env.OPENCODE_API_KEY || process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
-      console.error('❌ OPENCODE_API_KEY is missing');
+      console.error('❌ OPENCODE_API_KEY or OPENCODE_ZEN_API_KEY is missing');
       return {
         statusCode: 500,
         body: JSON.stringify({ error: 'API key not configured' }),
