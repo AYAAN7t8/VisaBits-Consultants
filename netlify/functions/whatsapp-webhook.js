@@ -39,7 +39,6 @@ You: "Spain visa takes 3-5 weeks. We handle docs, appointments, insurance. Where
 HANDOFF: If user needs complex help, say "I'll connect you with our team for detailed help."`;
 
 // In-memory conversation store
-const conversations = new Map();
 
 function getConversation(phone) {
   if (!conversations.has(phone)) {
